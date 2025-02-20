@@ -1,0 +1,71 @@
+
+
+
+
+import React, { useEffect, useState } from 'react';
+
+const BookingHistory = () => {
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    const fetchBookingHistory = async () => {
+      try {
+        const response = await fetch('https://localhost:7280/api/customer/booking-history', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch booking history");
+        }
+
+        const data = await response.json();
+        setBookings(data);
+      } catch (error) {
+        console.error("Error fetching booking history:", error);
+      }
+    };
+
+    fetchBookingHistory();
+  }, []);
+
+  return (
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full max-w-5xl text-center py-8">
+        <h1 className="text-3xl font-bold mb-6">Booking History</h1>
+
+        {bookings.length === 0 ? (
+          <p className="text-gray-500">No booking history found.</p>
+        ) : (
+          <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg mt-6">
+            <table className="w-full border-collapse text-gray-800">
+              <thead>
+                <tr className="bg-blue-600 text-white">
+                  <th className="p-4">Field Name</th>
+                  <th className="p-4">Date</th>
+                  <th className="p-4">Time Slot</th>
+                  <th className="p-4">Price</th>
+                  <th className="p-4">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((booking, index) => (
+                  <tr key={index} className="border-b hover:bg-blue-100 transition">
+                    <td className="p-4">{booking.field?.name || 'Unknown'}</td>
+                    <td className="p-4">{booking.bookingDate.split("T")[0]}</td>
+                    <td className="p-4">{booking.timeSlot || 'Full Day'}</td>
+                    <td className="p-4 font-bold text-blue-600">₹{booking.price}</td>
+                    <td className="p-4">{booking.paymentStatus}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default BookingHistory;

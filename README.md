@@ -43,13 +43,4 @@
 ---
 
 
----
-
-### **2. Add Badges for a Professional Look**
-You can include GitHub badges at the top of your **README.md**:
-```md
-![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/CDAC--Major-Project)
-![GitHub contributors](https://img.shields.io/github/contributors/yourusername/CDAC--Major-Project)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/CDAC--Major-Project?style=social)
-
 
